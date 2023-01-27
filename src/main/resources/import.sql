@@ -21,3 +21,5 @@ insert into form_payment (id, description) values (3, 'Cash');
 
 insert into permission (id, name, description) values (1, 'SEARCH_CUISINES', 'Allows to search cuisines');
 insert into permission (id, name, description) values (2, 'EDIT_CUISINES', 'Allows to edit cuisines');
+
+insert into restaurant_form_payment (restaurant_id, form_payment_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
