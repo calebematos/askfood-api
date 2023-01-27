@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import com.calebematos.askfood.infrastructure.repository.CustomJpaRepositoryImpl;
 
 @SpringBootApplication
+@EnableJpaRepositories(repositoryBaseClass = CustomJpaRepositoryImpl.class)
 public class AskfoodApiApplication {
 
 	public static void main(String[] args) {
