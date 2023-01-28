@@ -59,7 +59,7 @@ public class RestaurantController {
 			Optional<Restaurant> currentRestaurantOption = restaurantRepository.findById(id);
 			if(currentRestaurantOption.isPresent()) {
 				Restaurant currentRestaurant = currentRestaurantOption.get();
-				BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment");
+				BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment", "address");
 				currentRestaurant = restaurantService.save(currentRestaurant);
 				return ResponseEntity.ok(currentRestaurant);
 			}
