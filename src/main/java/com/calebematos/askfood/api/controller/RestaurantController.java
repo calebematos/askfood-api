@@ -1,8 +1,10 @@
 package com.calebematos.askfood.api.controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.calebematos.askfood.domain.exception.EntityNotFoundException;
+import com.calebematos.askfood.domain.model.Restaurant;
+import com.calebematos.askfood.domain.repository.RestaurantRepository;
+import com.calebematos.askfood.domain.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.calebematos.askfood.domain.exception.EntityNotFoundException;
-import com.calebematos.askfood.domain.model.Restaurant;
-import com.calebematos.askfood.domain.repository.RestaurantRepository;
-import com.calebematos.askfood.domain.service.RestaurantService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -59,7 +57,8 @@ public class RestaurantController {
 			Optional<Restaurant> currentRestaurantOption = restaurantRepository.findById(id);
 			if(currentRestaurantOption.isPresent()) {
 				Restaurant currentRestaurant = currentRestaurantOption.get();
-				BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment", "address");
+				BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
+						"address", "registrationDate");
 				currentRestaurant = restaurantService.save(currentRestaurant);
 				return ResponseEntity.ok(currentRestaurant);
 			}
