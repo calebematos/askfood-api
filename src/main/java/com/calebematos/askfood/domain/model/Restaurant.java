@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,16 +35,7 @@ public class Restaurant {
 
 	@Column(name = "shipping_fee")
 	private BigDecimal shippingFee;
-	
-	@ManyToOne
-	@JoinColumn(name = "cuisine_id")
-	private Cuisine cuisine;
 
-	@ManyToMany
-	@JoinTable(name = "restaurant_form_payment",
-				joinColumns = @JoinColumn(name = "restaurant_id"),
-				inverseJoinColumns = @JoinColumn(name = "form_payment_id"))
-	private List<FormPayment> formsPayment = new ArrayList<>();
 	private Boolean active;
 	private Boolean open;
 	@Embedded
@@ -56,5 +48,18 @@ public class Restaurant {
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime updateDate;
+
+	@ManyToOne
+	@JoinColumn(name = "cuisine_id")
+	private Cuisine cuisine;
+
+	@ManyToMany
+	@JoinTable(name = "restaurant_form_payment",
+				joinColumns = @JoinColumn(name = "restaurant_id"),
+				inverseJoinColumns = @JoinColumn(name = "form_payment_id"))
+	private List<FormPayment> formsPayment = new ArrayList<>();
+
+	@OneToMany(mappedBy = "restaurant")
+	private List<Product> products = new ArrayList<>();
 
 }
