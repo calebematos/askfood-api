@@ -1,5 +1,6 @@
 package com.calebematos.askfood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,6 +39,7 @@ public class Restaurant {
 
 	private Boolean active;
 	private Boolean open;
+	@JsonIgnore
 	@Embedded
 	private Address address;
 
@@ -50,8 +52,9 @@ public class Restaurant {
 	private LocalDateTime updateDate;
 
 	@ManyToOne
-	@JoinColumn(name = "cuisine_id")
+	@JoinColumn(name = "cuisine_id", nullable = false)
 	private Cuisine cuisine;
+
 
 	@ManyToMany
 	@JoinTable(name = "restaurant_form_payment",
@@ -59,6 +62,7 @@ public class Restaurant {
 				inverseJoinColumns = @JoinColumn(name = "form_payment_id"))
 	private List<FormPayment> formsPayment = new ArrayList<>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products = new ArrayList<>();
 
