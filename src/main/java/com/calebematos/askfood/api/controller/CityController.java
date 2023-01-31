@@ -1,11 +1,11 @@
 package com.calebematos.askfood.api.controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.calebematos.askfood.domain.model.City;
+import com.calebematos.askfood.domain.repository.CityRepository;
+import com.calebematos.askfood.domain.service.CityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,66 +16,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.calebematos.askfood.domain.exception.EntityInUseException;
-import com.calebematos.askfood.domain.exception.EntityNotFoundException;
-import com.calebematos.askfood.domain.model.City;
-import com.calebematos.askfood.domain.repository.CityRepository;
-import com.calebematos.askfood.domain.service.CityService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cities")
 @RequiredArgsConstructor
 public class CityController {
 
-	private final CityRepository cityRepository;
-	private final CityService cityService;
-	
-	@GetMapping
-	public List<City> list(){
-		return cityRepository.findAll();		
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<City> find(@PathVariable Long id) {
-		Optional<City> cityOptional = cityRepository.findById(id);
-		if (cityOptional.isPresent()) {
-			return ResponseEntity.ok(cityOptional.get());
-		}
-		return ResponseEntity.notFound().build();
-	}
+    private final CityRepository cityRepository;
+    private final CityService cityService;
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public City add(@RequestBody City city) {
-		return cityService.save(city);
-	}
+    @GetMapping
+    public List<City> list() {
+        return cityRepository.findAll();
+    }
 
-	@PutMapping("/{id}")
-	public ResponseEntity<City> update(@PathVariable Long id, @RequestBody City city) {
-		Optional<City> currentCityOption = cityRepository.findById(id);
-		if (currentCityOption.isPresent()) {
-			City currentCity = currentCityOption.get();
-			BeanUtils.copyProperties(city, currentCity, "id");
-			currentCity = cityService.save(currentCity);
+    @GetMapping("/{id}")
+    public City find(@PathVariable Long id) {
+        return cityService.findById(id);
+    }
 
-			return ResponseEntity.ok(currentCity);
-		}
-		return ResponseEntity.notFound().build();
-	}
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public City add(@RequestBody City city) {
+        return cityService.save(city);
+    }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
-		try {
-			cityService.delete(id);
-			return ResponseEntity.noContent().build();
+    @PutMapping("/{id}")
+    public City update(@PathVariable Long id, @RequestBody City city) {
+        City currentCity = cityService.findById(id);
 
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
+        BeanUtils.copyProperties(city, currentCity, "id");
 
-		} catch (EntityInUseException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-		}
-	}
+        return cityService.save(currentCity);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        cityService.delete(id);
+    }
 }
