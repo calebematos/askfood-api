@@ -23,8 +23,8 @@ public class RestaurantService {
 
 		Long cuisineId = restaurant.getCuisine().getId();
 		Cuisine cuisine = cuisineService.findById(cuisineId);
-	
 		restaurant.setCuisine(cuisine);
+
 		return restaurantRepository.save(restaurant);
 	}
 
