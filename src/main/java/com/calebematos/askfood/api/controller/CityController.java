@@ -1,7 +1,7 @@
 package com.calebematos.askfood.api.controller;
 
 import com.calebematos.askfood.domain.exception.BusinessException;
-import com.calebematos.askfood.domain.exception.EntityNotFoundException;
+import com.calebematos.askfood.domain.exception.StateNotFoundException;
 import com.calebematos.askfood.domain.model.City;
 import com.calebematos.askfood.domain.repository.CityRepository;
 import com.calebematos.askfood.domain.service.CityService;
@@ -43,21 +43,21 @@ public class CityController {
     public City add(@RequestBody City city) {
         try {
             return cityService.save(city);
-        } catch (EntityNotFoundException e) {
-            throw BusinessException.of(e.getMessage());
+        } catch (StateNotFoundException e) {
+            throw BusinessException.of(e.getMessage(), e);
         }
     }
 
     @PutMapping("/{id}")
     public City update(@PathVariable Long id, @RequestBody City city) {
-        City currentCity = cityService.findById(id);
-
-        BeanUtils.copyProperties(city, currentCity, "id");
-
         try {
+            City currentCity = cityService.findById(id);
+
+            BeanUtils.copyProperties(city, currentCity, "id");
+
             return cityService.save(currentCity);
-        } catch (EntityNotFoundException e) {
-            throw BusinessException.of(e.getMessage());
+        } catch (StateNotFoundException e) {
+            throw BusinessException.of(e.getMessage(), e);
         }
     }
 

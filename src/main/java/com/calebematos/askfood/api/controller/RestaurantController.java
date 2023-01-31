@@ -1,7 +1,7 @@
 package com.calebematos.askfood.api.controller;
 
 import com.calebematos.askfood.domain.exception.BusinessException;
-import com.calebematos.askfood.domain.exception.EntityNotFoundException;
+import com.calebematos.askfood.domain.exception.CuisineNotFoundException;
 import com.calebematos.askfood.domain.model.Restaurant;
 import com.calebematos.askfood.domain.repository.RestaurantRepository;
 import com.calebematos.askfood.domain.service.RestaurantService;
@@ -42,25 +42,23 @@ public class RestaurantController {
     public Restaurant add(@RequestBody Restaurant restaurant) {
         try {
             return restaurantService.save(restaurant);
-        } catch (
-                EntityNotFoundException e) {
-            throw BusinessException.of(e.getMessage());
+        } catch (CuisineNotFoundException e) {
+            throw BusinessException.of(e.getMessage(), e);
         }
     }
 
     @PutMapping("/{id}")
     public Restaurant update(@PathVariable Long id, @RequestBody Restaurant restaurant) {
-
-        Restaurant currentRestaurant = restaurantService.findById(id);
-
-        BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
-                "address", "registrationDate", "products");
         try {
+            Restaurant currentRestaurant = restaurantService.findById(id);
+
+            BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
+                    "address", "registrationDate", "products");
+
             return restaurantService.save(currentRestaurant);
-        } catch (EntityNotFoundException e) {
+        } catch (CuisineNotFoundException e) {
             throw BusinessException.of(e.getMessage());
         }
     }
-
 
 }
