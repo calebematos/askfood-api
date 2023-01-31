@@ -1,3 +1,30 @@
+set foreign_key_checks = 0;
+
+delete from city;
+delete from cuisine;
+delete from state;
+delete from form_payment;
+delete from role;
+delete from role_permission;
+delete from permission;
+delete from product;
+delete from restaurant;
+delete from restaurant_form_payment;
+delete from app_user;
+delete from user_role;
+
+set foreign_key_checks = 1;
+
+alter table city auto_increment = 1;
+alter table cuisine auto_increment = 1;
+alter table state auto_increment = 1;
+alter table form_payment auto_increment = 1;
+alter table role auto_increment = 1;
+alter table permission auto_increment = 1;
+alter table product auto_increment = 1;
+alter table restaurant auto_increment = 1;
+alter table app_user auto_increment = 1;
+
 insert into cuisine(id, name) values(1, 'Indian');
 insert into cuisine(id, name) values(2, 'Thai');
 insert into cuisine(id, name) values (3, 'Argentina');
@@ -12,7 +39,6 @@ insert into city (id, name, state_id) values (2, 'Belo Horizonte', 1);
 insert into city (id, name, state_id) values (3, 'São Paulo', 2);
 insert into city (id, name, state_id) values (4, 'Campinas', 2);
 insert into city (id, name, state_id) values (5, 'Fortaleza', 3);
-
 
 insert into restaurant(name, shipping_fee, cuisine_id, registration_date, update_date, active, open, address_zip, address_street, address_number, address_neighborhood, address_city_id) values('Tuk Tuk Indian Food', 15, 1, utc_timestamp, utc_timestamp, true, true, '009922', 'Rua Joao', '12', 'Centro',1);
 insert into restaurant(name, shipping_fee, cuisine_id, registration_date, update_date, active, open) values('Thai Gourmet', 10, 2, utc_timestamp, utc_timestamp, true, true);
