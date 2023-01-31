@@ -30,8 +30,8 @@ public class Ordering {
     @EqualsAndHashCode.Include
     private Long id;
 
-
     private BigDecimal subTotal;
+
     @Column(name = "shipping_fee", nullable = false)
     private BigDecimal shippingFee;
 
@@ -44,6 +44,7 @@ public class Ordering {
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
+
     @ManyToOne
     @JoinColumn(name = "form_payment_id", nullable = false)
     private FormPayment formPayment;
@@ -63,6 +64,9 @@ public class Ordering {
     private Address deliveryAddress;
 
     private LocalDateTime confirmationDate;
+
     private LocalDateTime cancellationDate;
+
     private LocalDateTime deliveryDate;
+
 }

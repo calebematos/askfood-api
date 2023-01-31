@@ -38,7 +38,9 @@ public class Restaurant {
 	private BigDecimal shippingFee;
 
 	private Boolean active;
+
 	private Boolean open;
+
 	@JsonIgnore
 	@Embedded
 	private Address address;
@@ -54,7 +56,6 @@ public class Restaurant {
 	@ManyToOne
 	@JoinColumn(name = "cuisine_id", nullable = false)
 	private Cuisine cuisine;
-
 
 	@ManyToMany
 	@JoinTable(name = "restaurant_form_payment",

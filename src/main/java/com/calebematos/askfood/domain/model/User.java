@@ -30,9 +30,12 @@ public class User {
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String email;
+
     private String password;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime registrationDate;
