@@ -17,6 +17,7 @@ public class CuisineService {
 
 	public static final String MSG_CUISINE_NOT_FOUND = "There is no registered cuisine with code %d";
 	public static final String MSG_CUISINE_IN_USE = "Cuisine code %d cannot be removed because it is in use";
+
 	private final CuisineRepository cuisineRepository;
 
 	public Cuisine save(Cuisine cuisine) {

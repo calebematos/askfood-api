@@ -47,7 +47,7 @@ public class StateController {
         State currentState = stateService.findById(id);
 
         BeanUtils.copyProperties(state, currentState, "id");
-        
+
         return stateService.save(currentState);
     }
 

@@ -19,6 +19,7 @@ public class CityService {
 	public static final String MSG_CITY_NOT_FOUND = "There is no registered city with code %d";
 	public static final String MSG_STATE_NOT_FOUND = "There is no registered state with code %d";
 	public static final String MSG_CITY_IN_USE = "City code %d cannot be removed because it is in use";
+
 	private final CityRepository cityRepository;
 	private final StateRepository stateRepository;
 

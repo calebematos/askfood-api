@@ -17,6 +17,7 @@ public class StateService {
 
 	public static final String MSG_STATE_NOT_FOUND = "There is no registered state with code %d";
 	public static final String MSG_STATE_IN_USE = "State code %d cannot be removed because it is in use";
+
 	private final StateRepository stateRepository;
 
 	public State save(State cuisine) {
