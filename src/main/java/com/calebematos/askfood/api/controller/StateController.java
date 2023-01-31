@@ -1,11 +1,11 @@
 package com.calebematos.askfood.api.controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.calebematos.askfood.domain.model.State;
+import com.calebematos.askfood.domain.repository.StateRepository;
+import com.calebematos.askfood.domain.service.StateService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,66 +16,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.calebematos.askfood.domain.exception.EntityInUseException;
-import com.calebematos.askfood.domain.exception.EntityNotFoundException;
-import com.calebematos.askfood.domain.model.State;
-import com.calebematos.askfood.domain.repository.StateRepository;
-import com.calebematos.askfood.domain.service.StateService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
 @RequestMapping("/states")
 @RequiredArgsConstructor
 public class StateController {
 
-	private final StateRepository stateRepository;
-	private final StateService stateService;
-	
-	@GetMapping
-	public List<State> list(){
-		return stateRepository.findAll();		
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<State> find(@PathVariable Long id) {
-		Optional<State> stateOptional = stateRepository.findById(id);
-		if (stateOptional.isPresent()) {
-			return ResponseEntity.ok(stateOptional.get());
-		}
-		return ResponseEntity.notFound().build();
-	}
+    private final StateRepository stateRepository;
+    private final StateService stateService;
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public State add(@RequestBody State state) {
-		return stateService.save(state);
-	}
+    @GetMapping
+    public List<State> list() {
+        return stateRepository.findAll();
+    }
 
-	@PutMapping("/{id}")
-	public ResponseEntity<State> update(@PathVariable Long id, @RequestBody State state) {
-		Optional<State> currentStateOption = stateRepository.findById(id);
-		if (currentStateOption.isPresent()) {
-			State currentState = currentStateOption.get();
-			BeanUtils.copyProperties(state, currentState, "id");
-			currentState = stateService.save(currentState);
+    @GetMapping("/{id}")
+    public State find(@PathVariable Long id) {
+        return stateService.findById(id);
+    }
 
-			return ResponseEntity.ok(currentState);
-		}
-		return ResponseEntity.notFound().build();
-	}
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public State add(@RequestBody State state) {
+        return stateService.save(state);
+    }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
-		try {
-			stateService.delete(id);
-			return ResponseEntity.noContent().build();
+    @PutMapping("/{id}")
+    public State update(@PathVariable Long id, @RequestBody State state) {
+        State currentState = stateService.findById(id);
 
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
+        BeanUtils.copyProperties(state, currentState, "id");
+        
+        return stateService.save(currentState);
+    }
 
-		} catch (EntityInUseException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-		}
-	}
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        stateService.delete(id);
+    }
 }
