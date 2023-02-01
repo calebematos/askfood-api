@@ -31,9 +31,9 @@ public class CuisineController {
         return cuisineRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Cuisine find(@PathVariable Long id) {
-        return cuisineService.findById(id);
+    @GetMapping("/{cuisineId}")
+    public Cuisine find(@PathVariable Long cuisineId) {
+        return cuisineService.findById(cuisineId);
     }
 
     @PostMapping
@@ -42,18 +42,18 @@ public class CuisineController {
         return cuisineService.save(cuisine);
     }
 
-    @PutMapping("/{id}")
-    public Cuisine update(@PathVariable Long id, @RequestBody Cuisine cuisine) {
-        Cuisine currentCuisine = cuisineService.findById(id);
+    @PutMapping("/{cuisineId}")
+    public Cuisine update(@PathVariable Long cuisineId, @RequestBody Cuisine cuisine) {
+        Cuisine currentCuisine = cuisineService.findById(cuisineId);
 
-        BeanUtils.copyProperties(cuisine, currentCuisine, "id");
+        BeanUtils.copyProperties(cuisine, currentCuisine, "cuisineId");
 
         return cuisineService.save(currentCuisine);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cuisineId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        cuisineService.delete(id);
+    public void delete(@PathVariable Long cuisineId) {
+        cuisineService.delete(cuisineId);
     }
 }

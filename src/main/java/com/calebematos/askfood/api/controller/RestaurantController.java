@@ -32,9 +32,9 @@ public class RestaurantController {
         return restaurantRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Restaurant find(@PathVariable Long id) {
-        return restaurantService.findById(id);
+    @GetMapping("/{restaurantId}")
+    public Restaurant find(@PathVariable Long restaurantId) {
+        return restaurantService.findById(restaurantId);
     }
 
     @PostMapping
@@ -47,10 +47,10 @@ public class RestaurantController {
         }
     }
 
-    @PutMapping("/{id}")
-    public Restaurant update(@PathVariable Long id, @RequestBody Restaurant restaurant) {
+    @PutMapping("/{restaurantId}")
+    public Restaurant update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
         try {
-            Restaurant currentRestaurant = restaurantService.findById(id);
+            Restaurant currentRestaurant = restaurantService.findById(restaurantId);
 
             BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
                     "address", "registrationDate", "products");

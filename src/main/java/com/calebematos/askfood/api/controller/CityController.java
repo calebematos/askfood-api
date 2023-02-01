@@ -33,9 +33,9 @@ public class CityController {
         return cityRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public City find(@PathVariable Long id) {
-        return cityService.findById(id);
+    @GetMapping("/{cityId}")
+    public City find(@PathVariable Long cityId) {
+        return cityService.findById(cityId);
     }
 
     @PostMapping
@@ -48,10 +48,10 @@ public class CityController {
         }
     }
 
-    @PutMapping("/{id}")
-    public City update(@PathVariable Long id, @RequestBody City city) {
+    @PutMapping("/{cityId}")
+    public City update(@PathVariable Long cityId, @RequestBody City city) {
         try {
-            City currentCity = cityService.findById(id);
+            City currentCity = cityService.findById(cityId);
 
             BeanUtils.copyProperties(city, currentCity, "id");
 
@@ -61,9 +61,9 @@ public class CityController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        cityService.delete(id);
+    public void delete(@PathVariable Long cityId) {
+        cityService.delete(cityId);
     }
 }
