@@ -31,9 +31,9 @@ public class StateController {
         return stateRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public State find(@PathVariable Long id) {
-        return stateService.findById(id);
+    @GetMapping("/{stateId}")
+    public State find(@PathVariable Long stateId) {
+        return stateService.findById(stateId);
     }
 
     @PostMapping
@@ -42,18 +42,18 @@ public class StateController {
         return stateService.save(state);
     }
 
-    @PutMapping("/{id}")
-    public State update(@PathVariable Long id, @RequestBody State state) {
-        State currentState = stateService.findById(id);
+    @PutMapping("/{stateId}")
+    public State update(@PathVariable Long stateId, @RequestBody State state) {
+        State currentState = stateService.findById(stateId);
 
-        BeanUtils.copyProperties(state, currentState, "id");
+        BeanUtils.copyProperties(state, currentState, "stateId");
 
         return stateService.save(currentState);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{stateId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        stateService.delete(id);
+    public void delete(@PathVariable Long stateId) {
+        stateService.delete(stateId);
     }
 }
