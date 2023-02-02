@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class RestaurantController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant add(@RequestBody Restaurant restaurant) {
+    public Restaurant add(@RequestBody @Valid Restaurant restaurant) {
         try {
             return restaurantService.save(restaurant);
         } catch (CuisineNotFoundException e) {
@@ -48,7 +49,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restaurantId}")
-    public Restaurant update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
+    public Restaurant update(@PathVariable Long restaurantId, @RequestBody @Valid Restaurant restaurant) {
         try {
             Restaurant currentRestaurant = restaurantService.findById(restaurantId);
 

@@ -10,7 +10,8 @@ public enum ProblemType {
     BUSINESS_ERROR("Business rule violation"),
     MESSAGE_NOT_READABLE("Message not readable"),
     INVALID_PARAMETER("Invalid parameter"),
-    SYSTEM_ERROR("System error");
+    SYSTEM_ERROR("System error"),
+    INVALID_DATA("Invalid data");
 
     private String title;
 
