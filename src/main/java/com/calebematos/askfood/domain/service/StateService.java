@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static java.lang.String.format;
 
@@ -19,10 +20,12 @@ public class StateService {
 
 	private final StateRepository stateRepository;
 
+	@Transactional
 	public State save(State cuisine) {
 		return stateRepository.save(cuisine);
 	}
 
+	@Transactional
 	public void delete(Long stateId) {
 
 		try {

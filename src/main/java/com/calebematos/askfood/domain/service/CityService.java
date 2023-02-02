@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static java.lang.String.format;
 
@@ -21,6 +22,7 @@ public class CityService {
 	private final CityRepository cityRepository;
 	private final StateService stateService;
 
+	@Transactional
 	public City save(City city) {
 		
 		Long stateId = city.getState().getId();
@@ -30,6 +32,7 @@ public class CityService {
 		return cityRepository.save(city);
 	}
 
+	@Transactional
 	public void delete(Long cityId) {
 
 		try {
