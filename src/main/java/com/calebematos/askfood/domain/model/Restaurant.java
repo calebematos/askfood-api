@@ -21,7 +21,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +55,11 @@ public class Restaurant {
 
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime registrationDate;
+	private OffsetDateTime registrationDate;
 
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime updateDate;
+	private OffsetDateTime updateDate;
 
 	@ManyToOne
 	@JoinColumn(name = "cuisine_id", nullable = false)

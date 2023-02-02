@@ -16,7 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class Ordering {
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime registrationDate;
+    private OffsetDateTime registrationDate;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -63,10 +63,10 @@ public class Ordering {
     @Embedded
     private Address deliveryAddress;
 
-    private LocalDateTime confirmationDate;
+    private OffsetDateTime confirmationDate;
 
-    private LocalDateTime cancellationDate;
+    private OffsetDateTime cancellationDate;
 
-    private LocalDateTime deliveryDate;
+    private OffsetDateTime deliveryDate;
 
 }
