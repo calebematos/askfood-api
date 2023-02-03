@@ -17,9 +17,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -35,18 +32,13 @@ public class Restaurant {
 	@EqualsAndHashCode.Include
 	private Long id;
 
-	@NotBlank
 	private String name;
 
-	@NotNull
-	@PositiveOrZero
 	@Column(name = "shipping_fee")
 	private BigDecimal shippingFee;
 
-	@NotNull
 	private Boolean active;
 
-	@NotNull
 	private Boolean open;
 
 	@JsonIgnore
