@@ -4,12 +4,11 @@ import com.calebematos.askfood.api.model.RestaurantModel;
 import com.calebematos.askfood.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class RestaurantModelAssembler {
 

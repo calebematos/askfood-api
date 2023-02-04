@@ -1,7 +1,7 @@
 package com.calebematos.askfood.api.controller;
 
+import com.calebematos.askfood.api.Mapper.RestaurantMapper;
 import com.calebematos.askfood.api.assembler.RestaurantInputDisassembler;
-import com.calebematos.askfood.api.assembler.RestaurantModelAssembler;
 import com.calebematos.askfood.api.model.RestaurantModel;
 import com.calebematos.askfood.api.model.input.RestaurantInput;
 import com.calebematos.askfood.domain.exception.BusinessException;
@@ -22,28 +22,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurants")
 @RequiredArgsConstructor
 public class RestaurantController {
 
-    private final RestaurantModelAssembler modelAssemble;
+//    private final RestaurantModelAssembler modelAssemble;
     private final RestaurantInputDisassembler inputDisassembler;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantService restaurantService;
+    private final RestaurantMapper restaurantMapper;
 
     @GetMapping
     public List<RestaurantModel> list() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
-        return modelAssemble.toCollectionModel(restaurants);
+        return restaurants.stream()
+                .map(restaurant -> restaurantMapper.toModel(restaurant))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{restaurantId}")
     public RestaurantModel find(@PathVariable Long restaurantId) {
         Restaurant restaurant = restaurantService.findById(restaurantId);
 
-        return modelAssemble.toModel(restaurant);
+        return restaurantMapper.toModel(restaurant);
     }
 
     @PostMapping
@@ -51,7 +55,7 @@ public class RestaurantController {
     public RestaurantModel add(@RequestBody @Valid RestaurantInput restaurantInput) {
         try {
             Restaurant restaurant = inputDisassembler.toDomainObject(restaurantInput);
-            return modelAssemble.toModel(restaurantService.save(restaurant));
+            return restaurantMapper.toModel(restaurantService.save(restaurant));
         } catch (CuisineNotFoundException e) {
             throw BusinessException.of(e.getMessage(), e);
         }
@@ -68,7 +72,7 @@ public class RestaurantController {
 //            BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
 //                    "address", "registrationDate", "products");
 
-            return modelAssemble.toModel(restaurantService.save(currentRestaurant));
+            return restaurantMapper.toModel(restaurantService.save(currentRestaurant));
         } catch (CuisineNotFoundException e) {
             throw BusinessException.of(e.getMessage());
         }

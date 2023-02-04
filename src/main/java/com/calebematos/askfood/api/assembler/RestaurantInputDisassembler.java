@@ -5,9 +5,8 @@ import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class RestaurantInputDisassembler {
 
