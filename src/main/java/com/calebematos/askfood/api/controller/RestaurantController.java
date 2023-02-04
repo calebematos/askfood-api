@@ -10,7 +10,6 @@ import com.calebematos.askfood.domain.model.Restaurant;
 import com.calebematos.askfood.domain.repository.RestaurantRepository;
 import com.calebematos.askfood.domain.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,12 +60,13 @@ public class RestaurantController {
     @PutMapping("/{restaurantId}")
     public RestaurantModel update(@PathVariable Long restaurantId, @RequestBody @Valid RestaurantInput restaurantInput) {
         try {
-            Restaurant restaurant = inputDisassembler.toDomainObject(restaurantInput);
+//            Restaurant restaurant = inputDisassembler.toDomainObject(restaurantInput);
 
             Restaurant currentRestaurant = restaurantService.findById(restaurantId);
 
-            BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
-                    "address", "registrationDate", "products");
+            inputDisassembler.copyToDomainObject(restaurantInput, currentRestaurant);
+//            BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
+//                    "address", "registrationDate", "products");
 
             return modelAssemble.toModel(restaurantService.save(currentRestaurant));
         } catch (CuisineNotFoundException e) {
