@@ -30,6 +30,7 @@ public class CuisineService {
 
 		try {
 			cuisineRepository.deleteById(cuisineId);
+			cuisineRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw CuisineNotFoundException.of(cuisineId);

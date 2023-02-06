@@ -1,10 +1,12 @@
 package com.calebematos.askfood.api.controller;
 
+import com.calebematos.askfood.api.mapper.CuisineMapper;
+import com.calebematos.askfood.api.model.CuisineModel;
+import com.calebematos.askfood.api.model.input.CuisineInput;
 import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.repository.CuisineRepository;
 import com.calebematos.askfood.domain.service.CuisineService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,30 +27,34 @@ public class CuisineController {
 
     private final CuisineRepository cuisineRepository;
     private final CuisineService cuisineService;
+    private final CuisineMapper cuisineMapper;
 
     @GetMapping
-    public List<Cuisine> list() {
-        return cuisineRepository.findAll();
+    public List<CuisineModel> list() {
+        List<Cuisine> cuisines = cuisineRepository.findAll();
+        return cuisineMapper.toCollectionModel(cuisines);
     }
 
     @GetMapping("/{cuisineId}")
-    public Cuisine find(@PathVariable Long cuisineId) {
-        return cuisineService.findById(cuisineId);
+    public CuisineModel find(@PathVariable Long cuisineId) {
+        Cuisine cuisine = cuisineService.findById(cuisineId);
+        return cuisineMapper.toModel(cuisine);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cuisine add(@RequestBody Cuisine cuisine) {
-        return cuisineService.save(cuisine);
+    public CuisineModel add(@RequestBody CuisineInput cuisineInput) {
+        Cuisine cuisine = cuisineMapper.toDomainObject(cuisineInput);
+        return cuisineMapper.toModel(cuisineService.save(cuisine));
     }
 
     @PutMapping("/{cuisineId}")
-    public Cuisine update(@PathVariable Long cuisineId, @RequestBody Cuisine cuisine) {
+    public CuisineModel update(@PathVariable Long cuisineId, @RequestBody CuisineInput cuisineInput) {
         Cuisine currentCuisine = cuisineService.findById(cuisineId);
 
-        BeanUtils.copyProperties(cuisine, currentCuisine, "cuisineId");
+         cuisineMapper.copyToDomainObject(cuisineInput, currentCuisine);
 
-        return cuisineService.save(currentCuisine);
+        return cuisineMapper.toModel(cuisineService.save(currentCuisine));
     }
 
     @DeleteMapping("/{cuisineId}")
