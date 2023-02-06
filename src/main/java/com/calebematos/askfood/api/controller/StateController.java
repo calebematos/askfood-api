@@ -1,10 +1,12 @@
 package com.calebematos.askfood.api.controller;
 
+import com.calebematos.askfood.api.mapper.StateMapper;
+import com.calebematos.askfood.api.model.StateModel;
+import com.calebematos.askfood.api.model.input.StateInput;
 import com.calebematos.askfood.domain.model.State;
 import com.calebematos.askfood.domain.repository.StateRepository;
 import com.calebematos.askfood.domain.service.StateService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,30 +27,34 @@ public class StateController {
 
     private final StateRepository stateRepository;
     private final StateService stateService;
+    private final StateMapper stateMapper;
 
     @GetMapping
-    public List<State> list() {
-        return stateRepository.findAll();
+    public List<StateModel> list() {
+        List<State> states = stateRepository.findAll();
+        return stateMapper.toCollectionModel(states);
     }
 
     @GetMapping("/{stateId}")
-    public State find(@PathVariable Long stateId) {
-        return stateService.findById(stateId);
+    public StateModel find(@PathVariable Long stateId) {
+        State state = stateService.findById(stateId);
+        return stateMapper.toModel(state);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public State add(@RequestBody State state) {
-        return stateService.save(state);
+    public StateModel add(@RequestBody StateInput stateInput) {
+        State state = stateMapper.toDomainObject(stateInput);
+        return stateMapper.toModel(stateService.save(state));
     }
 
     @PutMapping("/{stateId}")
-    public State update(@PathVariable Long stateId, @RequestBody State state) {
+    public StateModel update(@PathVariable Long stateId, @RequestBody StateInput stateInput) {
         State currentState = stateService.findById(stateId);
 
-        BeanUtils.copyProperties(state, currentState, "stateId");
+        stateMapper.copyToDomainObject(stateInput, currentState);
 
-        return stateService.save(currentState);
+        return stateMapper.toModel(stateService.save(currentState));
     }
 
     @DeleteMapping("/{stateId}")

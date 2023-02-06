@@ -13,7 +13,7 @@ public abstract class CuisineMapper {
 
     public abstract CuisineModel toModel(Cuisine cuisine);
 
-    public abstract List<CuisineModel> toCollectionModel(List<Cuisine> restaurants);
+    public abstract List<CuisineModel> toCollectionModel(List<Cuisine> cuisines);
 
     public abstract Cuisine toDomainObject(CuisineInput cuisineInput);
 

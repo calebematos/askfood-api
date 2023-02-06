@@ -30,7 +30,7 @@ public class StateService {
 
 		try {
 			stateRepository.deleteById(stateId);
-
+			stateRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw StateNotFoundException.of(stateId);
 		} catch (DataIntegrityViolationException e) {
