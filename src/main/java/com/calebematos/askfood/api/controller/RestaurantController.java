@@ -1,7 +1,6 @@
 package com.calebematos.askfood.api.controller;
 
-import com.calebematos.askfood.api.Mapper.RestaurantMapper;
-import com.calebematos.askfood.api.assembler.RestaurantInputDisassembler;
+import com.calebematos.askfood.api.mapper.RestaurantMapper;
 import com.calebematos.askfood.api.model.RestaurantModel;
 import com.calebematos.askfood.api.model.input.RestaurantInput;
 import com.calebematos.askfood.domain.exception.BusinessException;
@@ -22,15 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurants")
 @RequiredArgsConstructor
 public class RestaurantController {
 
-//    private final RestaurantModelAssembler modelAssemble;
-    private final RestaurantInputDisassembler inputDisassembler;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
@@ -38,9 +34,7 @@ public class RestaurantController {
     @GetMapping
     public List<RestaurantModel> list() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
-        return restaurants.stream()
-                .map(restaurant -> restaurantMapper.toModel(restaurant))
-                .collect(Collectors.toList());
+        return restaurantMapper.toCollectionModel(restaurants);
     }
 
     @GetMapping("/{restaurantId}")
@@ -54,7 +48,7 @@ public class RestaurantController {
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantModel add(@RequestBody @Valid RestaurantInput restaurantInput) {
         try {
-            Restaurant restaurant = inputDisassembler.toDomainObject(restaurantInput);
+            Restaurant restaurant = restaurantMapper.toDomainObject(restaurantInput);
             return restaurantMapper.toModel(restaurantService.save(restaurant));
         } catch (CuisineNotFoundException e) {
             throw BusinessException.of(e.getMessage(), e);
@@ -64,13 +58,9 @@ public class RestaurantController {
     @PutMapping("/{restaurantId}")
     public RestaurantModel update(@PathVariable Long restaurantId, @RequestBody @Valid RestaurantInput restaurantInput) {
         try {
-//            Restaurant restaurant = inputDisassembler.toDomainObject(restaurantInput);
-
             Restaurant currentRestaurant = restaurantService.findById(restaurantId);
 
-            inputDisassembler.copyToDomainObject(restaurantInput, currentRestaurant);
-//            BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formsPayment",
-//                    "address", "registrationDate", "products");
+            restaurantMapper.copyToDomainObject(restaurantInput, currentRestaurant);
 
             return restaurantMapper.toModel(restaurantService.save(currentRestaurant));
         } catch (CuisineNotFoundException e) {
