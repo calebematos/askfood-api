@@ -17,36 +17,37 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class CityService {
 
-	public static final String MSG_CITY_IN_USE = "City code %d cannot be removed because it is in use";
+    public static final String MSG_CITY_IN_USE = "City code %d cannot be removed because it is in use";
 
-	private final CityRepository cityRepository;
-	private final StateService stateService;
+    private final CityRepository cityRepository;
+    private final StateService stateService;
 
-	@Transactional
-	public City save(City city) {
-		
-		Long stateId = city.getState().getId();
-		State state = stateService.findById(stateId);
-		city.setState(state);
+    @Transactional
+    public City save(City city) {
 
-		return cityRepository.save(city);
-	}
+        Long stateId = city.getState().getId();
+        State state = stateService.findById(stateId);
+        city.setState(state);
 
-	@Transactional
-	public void delete(Long cityId) {
+        return cityRepository.save(city);
+    }
 
-		try {
-			cityRepository.deleteById(cityId);
+    @Transactional
+    public void delete(Long cityId) {
 
-		} catch (EmptyResultDataAccessException e) {
-			throw CityNotFoundException.of(cityId);
-		} catch (DataIntegrityViolationException e) {
-			throw EntityInUseException.of(format(MSG_CITY_IN_USE, cityId));
-		}
-	}
+        try {
+            cityRepository.deleteById(cityId);
+            cityRepository.flush();
+
+        } catch (EmptyResultDataAccessException e) {
+            throw CityNotFoundException.of(cityId);
+        } catch (DataIntegrityViolationException e) {
+            throw EntityInUseException.of(format(MSG_CITY_IN_USE, cityId));
+        }
+    }
 
     public City findById(Long cityId) {
-		return cityRepository.findById(cityId)
-				.orElseThrow(() -> CityNotFoundException.of(cityId));
+        return cityRepository.findById(cityId)
+                .orElseThrow(() -> CityNotFoundException.of(cityId));
     }
 }
