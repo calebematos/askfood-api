@@ -2,6 +2,7 @@ package com.calebematos.askfood.api.controller;
 
 import com.calebematos.askfood.api.mapper.RestaurantMapper;
 import com.calebematos.askfood.api.model.RestaurantModel;
+import com.calebematos.askfood.api.model.input.ActiveInput;
 import com.calebematos.askfood.api.model.input.RestaurantInput;
 import com.calebematos.askfood.domain.exception.BusinessException;
 import com.calebematos.askfood.domain.exception.CuisineNotFoundException;
@@ -65,6 +66,16 @@ public class RestaurantController {
             return restaurantMapper.toModel(restaurantService.save(currentRestaurant));
         } catch (CuisineNotFoundException e) {
             throw BusinessException.of(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{restaurantId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void activateOrInactivate(@PathVariable Long restaurantId, @RequestBody ActiveInput activeInput) {
+        if (activeInput.getActive()) {
+            restaurantService.activate(restaurantId);
+        } else {
+            restaurantService.inactivate(restaurantId);
         }
     }
 

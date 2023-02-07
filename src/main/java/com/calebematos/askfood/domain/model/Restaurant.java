@@ -37,7 +37,7 @@ public class Restaurant {
 	@Column(name = "shipping_fee")
 	private BigDecimal shippingFee;
 
-	private Boolean active;
+	private Boolean active = Boolean.TRUE;
 
 	private Boolean open;
 
@@ -67,4 +67,10 @@ public class Restaurant {
 	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products = new ArrayList<>();
 
+	public void activate(){
+		setActive(Boolean.TRUE);
+	}
+	public void inactivate(){
+		setActive(Boolean.FALSE);
+	}
 }

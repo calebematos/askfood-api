@@ -29,4 +29,16 @@ public class RestaurantService {
 		return restaurantRepository.findById(restaurantId)
 				.orElseThrow(() -> RestaurantNotFoundException.of(restaurantId));
     }
+
+	@Transactional
+	public void activate(Long restaurantId){
+		Restaurant restaurant = findById(restaurantId);
+		restaurant.activate();
+	}
+
+	@Transactional
+	public void inactivate(Long restaurantId){
+		Restaurant restaurant = findById(restaurantId);
+		restaurant.inactivate();
+	}
 }

@@ -26,6 +26,7 @@ public class RestaurantInput {
 
     @NotNull
     private Boolean active;
+
     @NotNull
     private Boolean open;
 }
