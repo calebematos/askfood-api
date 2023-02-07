@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -45,7 +46,7 @@ public class CityController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CityModel add(@RequestBody CityInput cityInput) {
+    public CityModel add(@RequestBody @Valid CityInput cityInput) {
         try {
             City city = mapper.toDomainObject(cityInput);
             return mapper.toModel(cityService.save(city));
@@ -55,7 +56,7 @@ public class CityController {
     }
 
     @PutMapping("/{cityId}")
-    public CityModel update(@PathVariable Long cityId, @RequestBody CityInput cityInput) {
+    public CityModel update(@PathVariable Long cityId, @RequestBody @Valid CityInput cityInput) {
         try {
             City currentCity = cityService.findById(cityId);
 

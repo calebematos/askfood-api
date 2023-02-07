@@ -14,8 +14,8 @@ public class RestaurantNotFoundException extends EntityNotFoundException {
         return new RestaurantNotFoundException(msg);
     }
 
-    public static RestaurantNotFoundException of(Long stateId) {
-        return new RestaurantNotFoundException(format("There is no registered restaurant with code %d", stateId));
+    public static RestaurantNotFoundException of(Long restaurantId) {
+        return new RestaurantNotFoundException(format("There is no registered restaurant with code %d", restaurantId));
     }
 
 }

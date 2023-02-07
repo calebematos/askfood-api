@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -43,13 +44,13 @@ public class CuisineController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CuisineModel add(@RequestBody CuisineInput cuisineInput) {
+    public CuisineModel add(@RequestBody @Valid CuisineInput cuisineInput) {
         Cuisine cuisine = cuisineMapper.toDomainObject(cuisineInput);
         return cuisineMapper.toModel(cuisineService.save(cuisine));
     }
 
     @PutMapping("/{cuisineId}")
-    public CuisineModel update(@PathVariable Long cuisineId, @RequestBody CuisineInput cuisineInput) {
+    public CuisineModel update(@PathVariable Long cuisineId, @RequestBody @Valid CuisineInput cuisineInput) {
         Cuisine currentCuisine = cuisineService.findById(cuisineId);
 
          cuisineMapper.copyToDomainObject(cuisineInput, currentCuisine);

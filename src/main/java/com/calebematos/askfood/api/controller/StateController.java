@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -43,13 +44,13 @@ public class StateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StateModel add(@RequestBody StateInput stateInput) {
+    public StateModel add(@RequestBody @Valid StateInput stateInput) {
         State state = stateMapper.toDomainObject(stateInput);
         return stateMapper.toModel(stateService.save(state));
     }
 
     @PutMapping("/{stateId}")
-    public StateModel update(@PathVariable Long stateId, @RequestBody StateInput stateInput) {
+    public StateModel update(@PathVariable Long stateId, @RequestBody @Valid StateInput stateInput) {
         State currentState = stateService.findById(stateId);
 
         stateMapper.copyToDomainObject(stateInput, currentState);

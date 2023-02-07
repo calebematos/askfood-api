@@ -14,8 +14,8 @@ public class CuisineNotFoundException extends EntityNotFoundException {
         return new CuisineNotFoundException(msg);
     }
 
-    public static CuisineNotFoundException of(Long stateId) {
-        return new CuisineNotFoundException(format("There is no registered cuisine with code %d", stateId));
+    public static CuisineNotFoundException of(Long cuisineId) {
+        return new CuisineNotFoundException(format("There is no registered cuisine with code %d", cuisineId));
     }
 
 }

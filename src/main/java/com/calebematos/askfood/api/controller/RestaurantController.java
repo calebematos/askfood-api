@@ -71,7 +71,7 @@ public class RestaurantController {
 
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void activateOrInactivate(@PathVariable Long restaurantId, @RequestBody ActiveInput activeInput) {
+    public void activateOrInactivate(@PathVariable Long restaurantId, @RequestBody @Valid ActiveInput activeInput) {
         if (activeInput.getActive()) {
             restaurantService.activate(restaurantId);
         } else {

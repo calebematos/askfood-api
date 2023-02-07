@@ -14,8 +14,8 @@ public class CityNotFoundException extends EntityNotFoundException {
         return new CityNotFoundException(msg);
     }
 
-    public static CityNotFoundException of(Long stateId) {
-        return new CityNotFoundException(format("There is no registered city with code %d", stateId));
+    public static CityNotFoundException of(Long cuisineId) {
+        return new CityNotFoundException(format("There is no registered city with code %d", cuisineId));
     }
 
 }
