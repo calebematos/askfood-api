@@ -5,6 +5,7 @@ import com.calebematos.askfood.api.model.input.RestaurantInput;
 import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.model.Restaurant;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
@@ -15,6 +16,8 @@ public abstract class RestaurantMapper {
 
     public static final RestaurantMapper INSTANCE = Mappers.getMapper(RestaurantMapper.class);
 
+    @Mapping(target = "address.city", source = "restaurant.address.city.name")
+    @Mapping(target = "address.state", source = "restaurant.address.city.state.name")
     public abstract RestaurantModel toModel(Restaurant restaurant);
 
     public abstract List<RestaurantModel> toCollectionModel(List<Restaurant> restaurants);
