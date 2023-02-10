@@ -1,6 +1,7 @@
 package com.calebematos.askfood.domain.service;
 
 import com.calebematos.askfood.domain.exception.RestaurantNotFoundException;
+import com.calebematos.askfood.domain.model.City;
 import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.model.Restaurant;
 import com.calebematos.askfood.domain.repository.RestaurantRepository;
@@ -14,13 +15,21 @@ public class RestaurantService {
 
 	private final RestaurantRepository restaurantRepository;
 	private final CuisineService cuisineService;
+	private final CityService cityService;
+
 
 	@Transactional
 	public Restaurant save(Restaurant restaurant) {
 
 		Long cuisineId = restaurant.getCuisine().getId();
+		Long cityId = restaurant.getAddress().getCity().getId();
+
 		Cuisine cuisine = cuisineService.findById(cuisineId);
+		City city = cityService.findById(cityId);
+
 		restaurant.setCuisine(cuisine);
+		restaurant.getAddress().setCity(city);
+
 
 		return restaurantRepository.save(restaurant);
 	}

@@ -41,7 +41,6 @@ public class Restaurant {
 
 	private Boolean open;
 
-	@JsonIgnore
 	@Embedded
 	private Address address;
 

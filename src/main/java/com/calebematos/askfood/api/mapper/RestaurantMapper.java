@@ -2,6 +2,7 @@ package com.calebematos.askfood.api.mapper;
 
 import com.calebematos.askfood.api.model.RestaurantModel;
 import com.calebematos.askfood.api.model.input.RestaurantInput;
+import com.calebematos.askfood.domain.model.City;
 import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.model.Restaurant;
 import org.mapstruct.Mapper;
@@ -29,6 +30,11 @@ public abstract class RestaurantMapper {
 
     public void copyToDomainObject(RestaurantInput restaurantInput, Restaurant restaurant) {
         restaurant.setCuisine(new Cuisine());
+
+        if(restaurant.getAddress() != null){
+            restaurant.getAddress().setCity(new City());
+        }
+
         copyObject(restaurantInput, restaurant);
     }
 

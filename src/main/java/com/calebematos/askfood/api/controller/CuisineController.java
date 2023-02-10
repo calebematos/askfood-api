@@ -3,6 +3,9 @@ package com.calebematos.askfood.api.controller;
 import com.calebematos.askfood.api.mapper.CuisineMapper;
 import com.calebematos.askfood.api.model.CuisineModel;
 import com.calebematos.askfood.api.model.input.CuisineInput;
+import com.calebematos.askfood.domain.exception.BusinessException;
+import com.calebematos.askfood.domain.exception.CityNotFoundException;
+import com.calebematos.askfood.domain.exception.CuisineNotFoundException;
 import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.repository.CuisineRepository;
 import com.calebematos.askfood.domain.service.CuisineService;
@@ -45,17 +48,25 @@ public class CuisineController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CuisineModel add(@RequestBody @Valid CuisineInput cuisineInput) {
-        Cuisine cuisine = cuisineMapper.toDomainObject(cuisineInput);
-        return cuisineMapper.toModel(cuisineService.save(cuisine));
+        try {
+            Cuisine cuisine = cuisineMapper.toDomainObject(cuisineInput);
+            return cuisineMapper.toModel(cuisineService.save(cuisine));
+        } catch (CuisineNotFoundException | CityNotFoundException e) {
+            throw BusinessException.of(e.getMessage());
+        }
     }
 
     @PutMapping("/{cuisineId}")
     public CuisineModel update(@PathVariable Long cuisineId, @RequestBody @Valid CuisineInput cuisineInput) {
-        Cuisine currentCuisine = cuisineService.findById(cuisineId);
+        try {
+            Cuisine currentCuisine = cuisineService.findById(cuisineId);
 
-         cuisineMapper.copyToDomainObject(cuisineInput, currentCuisine);
+            cuisineMapper.copyToDomainObject(cuisineInput, currentCuisine);
 
-        return cuisineMapper.toModel(cuisineService.save(currentCuisine));
+            return cuisineMapper.toModel(cuisineService.save(currentCuisine));
+        } catch (CuisineNotFoundException | CityNotFoundException e) {
+            throw BusinessException.of(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{cuisineId}")
