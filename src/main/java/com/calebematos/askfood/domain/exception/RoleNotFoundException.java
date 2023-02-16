@@ -14,8 +14,8 @@ public class RoleNotFoundException extends EntityNotFoundException {
         return new RoleNotFoundException(msg);
     }
 
-    public static RoleNotFoundException of(Long cuisineId) {
-        return new RoleNotFoundException(format("There is no registered role with code %d", cuisineId));
+    public static RoleNotFoundException of(Long roleId) {
+        return new RoleNotFoundException(format("There is no registered role with code %d", roleId));
     }
 
 }

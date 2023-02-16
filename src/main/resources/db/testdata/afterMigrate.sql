@@ -71,3 +71,9 @@ insert into product (name, description, price, active, restaurant_id) values ('S
 insert into product (name, description, price, active, restaurant_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 insert into role (name) values ('Manager'), ('Seller'), ('Secretary'), ('Register');
+
+insert into app_user (id, name, email, password, registration_date) values
+(1, 'João da Silva', 'joao.ger@askfood.com', '123', utc_timestamp),
+(2, 'Maria Joaquina', 'maria.vnd@askfood.com', '123', utc_timestamp),
+(3, 'José Souza', 'jose.aux@askfood.com', '123', utc_timestamp),
+(4, 'Sebastião Martins', 'sebastiao.cad@askfood.com', '123', utc_timestamp);
