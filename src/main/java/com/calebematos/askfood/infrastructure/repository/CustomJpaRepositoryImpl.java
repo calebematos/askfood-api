@@ -1,13 +1,11 @@
 package com.calebematos.askfood.infrastructure.repository;
 
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
-
+import com.calebematos.askfood.domain.repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import com.calebematos.askfood.domain.repository.CustomJpaRepository;
+import javax.persistence.EntityManager;
+import java.util.Optional;
 
 public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements CustomJpaRepository<T, ID> {
 
@@ -24,6 +22,11 @@ public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> i
 
 		T entity = manager.createQuery(jpql, getDomainClass()).setMaxResults(1).getSingleResult();
 		return Optional.ofNullable(entity);
+	}
+
+	@Override
+	public void detach(T entity) {
+		manager.detach(entity);
 	}
 
 }

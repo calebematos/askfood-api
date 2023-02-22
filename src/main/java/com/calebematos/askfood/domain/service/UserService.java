@@ -11,6 +11,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static java.lang.String.format;
 
 @Service
@@ -23,6 +25,14 @@ public class UserService {
 
 	@Transactional
 	public User save(User user) {
+
+		userRepository.detach(user);
+		Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+
+		if(optionalUser.isPresent() && !optionalUser.get().equals(user)){
+			throw BusinessException.of(format("There is already a registered user with email %s", user.getEmail()));
+		}
+
 		return userRepository.save(user);
 	}
 
