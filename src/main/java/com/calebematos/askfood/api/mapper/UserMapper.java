@@ -7,6 +7,7 @@ import com.calebematos.askfood.domain.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.Collection;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -14,7 +15,7 @@ public abstract class UserMapper {
 
     public abstract UserModel toModel(User user);
 
-    public abstract List<UserModel> toCollectionModel(List<User> users);
+    public abstract List<UserModel> toCollectionModel(Collection<User> users);
 
     public abstract User toDomainObject(UserInput userInput);
 

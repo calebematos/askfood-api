@@ -5,6 +5,7 @@ import com.calebematos.askfood.domain.model.City;
 import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.model.FormPayment;
 import com.calebematos.askfood.domain.model.Restaurant;
+import com.calebematos.askfood.domain.model.User;
 import com.calebematos.askfood.domain.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class RestaurantService {
     private final CuisineService cuisineService;
     private final FormPaymentService formPaymentService;
     private final CityService cityService;
+    private final UserService userService;
 
 
     @Transactional
@@ -53,21 +55,21 @@ public class RestaurantService {
         restaurant.inactivate();
     }
 
-	@Transactional
+    @Transactional
     public void disassociateFormPayment(Long restaurantId, Long formPaymentId) {
-		Restaurant restaurant = findById(restaurantId);
-		FormPayment formPayment = formPaymentService.findById(formPaymentId);
+        Restaurant restaurant = findById(restaurantId);
+        FormPayment formPayment = formPaymentService.findById(formPaymentId);
 
-		restaurant.removeFormPayment(formPayment);
-	}
+        restaurant.removeFormPayment(formPayment);
+    }
 
-	@Transactional
-	public void associateFormPayment(Long restaurantId, Long formPaymentId) {
-		Restaurant restaurant = findById(restaurantId);
-		FormPayment formPayment = formPaymentService.findById(formPaymentId);
+    @Transactional
+    public void associateFormPayment(Long restaurantId, Long formPaymentId) {
+        Restaurant restaurant = findById(restaurantId);
+        FormPayment formPayment = formPaymentService.findById(formPaymentId);
 
-		restaurant.addFormPayment(formPayment);
-	}
+        restaurant.addFormPayment(formPayment);
+    }
 
     @Transactional
     public void close(Long restaurantId) {
@@ -79,5 +81,21 @@ public class RestaurantService {
     public void open(Long restaurantId) {
         Restaurant restaurant = findById(restaurantId);
         restaurant.open();
+    }
+
+    @Transactional
+    public void disassociateResponsible(Long restaurantId, Long userId) {
+        Restaurant restaurant = findById(restaurantId);
+        User user = userService.findById(userId);
+
+        restaurant.removeResponsible(user);
+    }
+
+    @Transactional
+    public void associateResponsible(Long restaurantId, Long userId) {
+        Restaurant restaurant = findById(restaurantId);
+        User user = userService.findById(userId);
+
+        restaurant.addResponsible(user);
     }
 }

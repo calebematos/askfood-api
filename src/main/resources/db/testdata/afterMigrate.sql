@@ -12,6 +12,7 @@ delete from restaurant;
 delete from restaurant_form_payment;
 delete from app_user;
 delete from user_role;
+delete from restaurant_responsible_user;
 
 set foreign_key_checks = 1;
 
@@ -78,6 +79,9 @@ insert into app_user (id, name, email, password, registration_date) values
 (1, 'João da Silva', 'joao.ger@askfood.com', '123', utc_timestamp),
 (2, 'Maria Joaquina', 'maria.vnd@askfood.com', '123', utc_timestamp),
 (3, 'José Souza', 'jose.aux@askfood.com', '123', utc_timestamp),
-(4, 'Sebastião Martins', 'sebastiao.cad@askfood.com', '123', utc_timestamp);
+(4, 'Sebastião Martins', 'sebastiao.cad@askfood.com', '123', utc_timestamp),
+(5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
 
 insert into user_role (user_id, role_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+
+insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (2,3), (3, 5);
