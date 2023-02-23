@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
@@ -53,6 +55,16 @@ public class RestaurantService {
     public void inactivate(Long restaurantId) {
         Restaurant restaurant = findById(restaurantId);
         restaurant.inactivate();
+    }
+
+    @Transactional
+    public void activate(List<Long> restaurantId) {
+        restaurantId.forEach(this::activate);
+    }
+
+    @Transactional
+    public void inactivate(List<Long> restaurantId) {
+        restaurantId.forEach(this::inactivate);
     }
 
     @Transactional
