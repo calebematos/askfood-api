@@ -51,9 +51,6 @@ insert into form_payment (id, description) values (1, 'Credit card');
 insert into form_payment (id, description) values (2, 'Debit card');
 insert into form_payment (id, description) values (3, 'Cash');
 
-insert into permission (id, name, description) values (1, 'SEARCH_CUISINES', 'Allows to search cuisines');
-insert into permission (id, name, description) values (2, 'EDIT_CUISINES', 'Allows to edit cuisines');
-
 insert into restaurant_form_payment (restaurant_id, form_payment_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
 insert into product (name, description, price, active, restaurant_id) values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
@@ -71,6 +68,11 @@ insert into product (name, description, price, active, restaurant_id) values ('S
 insert into product (name, description, price, active, restaurant_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 insert into role (name) values ('Manager'), ('Seller'), ('Secretary'), ('Register');
+
+insert into permission (id, name, description) values (1, 'SEARCH_CUISINES', 'Allows to search cuisines');
+insert into permission (id, name, description) values (2, 'EDIT_CUISINES', 'Allows to edit cuisines');
+
+insert into role_permission (role_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert into app_user (id, name, email, password, registration_date) values
 (1, 'João da Silva', 'joao.ger@askfood.com', '123', utc_timestamp),

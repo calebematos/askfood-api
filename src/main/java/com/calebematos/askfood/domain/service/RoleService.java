@@ -2,6 +2,7 @@ package com.calebematos.askfood.domain.service;
 
 import com.calebematos.askfood.domain.exception.EntityInUseException;
 import com.calebematos.askfood.domain.exception.RoleNotFoundException;
+import com.calebematos.askfood.domain.model.Permission;
 import com.calebematos.askfood.domain.model.Role;
 import com.calebematos.askfood.domain.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class RoleService {
 	public static final String MSG_ROLE_IN_USE = "Role code %d cannot be removed because it is in use";
 
 	private final RoleRepository roleRepository;
+	private final PermissionService permissionService;
 
 	@Transactional
 	public Role save(Role role) {
@@ -44,4 +46,19 @@ public class RoleService {
 				RoleNotFoundException.of(roleId));
 	}
 
+	@Transactional
+    public void disassociate(Long roleId, Long permissionId) {
+		Role role = findById(roleId);
+		Permission permission = permissionService.findById(permissionId);
+
+		role.removePermission(permission);
+	}
+
+	@Transactional
+	public void associate(Long roleId, Long permissionId) {
+		Role role = findById(roleId);
+		Permission permission = permissionService.findById(permissionId);
+
+		role.addPermission(permission);
+	}
 }
