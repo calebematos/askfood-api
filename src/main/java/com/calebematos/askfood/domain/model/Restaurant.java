@@ -106,4 +106,12 @@ public class Restaurant {
         return getResponsible().add(user);
     }
 
+    public boolean acceptFormPayment(FormPayment formPayment){
+        return getFormsPayment().contains(formPayment);
+    }
+
+    public boolean doesNotAcceptFormPayment(FormPayment formPayment){
+        return !acceptFormPayment(formPayment);
+    }
+
 }

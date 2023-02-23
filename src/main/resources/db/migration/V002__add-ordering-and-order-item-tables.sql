@@ -11,15 +11,15 @@ CREATE TABLE ordering (
     registration_date DATETIME NOT NULL,
     shipping_fee DECIMAL(10 , 2 ) NOT NULL,
     status VARCHAR(10) NOT NULL,
-    sub_total DECIMAL(10 , 2 ) NOT NULL,
+    subtotal DECIMAL(10 , 2 ) NOT NULL,
     total_value DECIMAL(10 , 2 ) NOT NULL,
-    app_user_id BIGINT NOT NULL,
+    client_user_id BIGINT NOT NULL,
     address_city_id BIGINT,
     form_payment_id BIGINT NOT NULL,
     restaurant_id BIGINT NOT NULL,
     PRIMARY KEY (id),
 
-    CONSTRAINT fk_ordering_app_user FOREIGN KEY (app_user_id)
+    CONSTRAINT fk_ordering_app_user FOREIGN KEY (client_user_id)
         REFERENCES app_user (id),
     CONSTRAINT fk_ordering_address_city FOREIGN KEY (address_city_id)
         REFERENCES city (id),

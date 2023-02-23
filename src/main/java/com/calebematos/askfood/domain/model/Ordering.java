@@ -30,7 +30,7 @@ public class Ordering {
     @EqualsAndHashCode.Include
     private Long id;
 
-    private BigDecimal subTotal;
+    private BigDecimal subtotal;
 
     @Column(name = "shipping_fee", nullable = false)
     private BigDecimal shippingFee;
@@ -50,7 +50,7 @@ public class Ordering {
     private FormPayment formPayment;
 
     @ManyToOne
-    @JoinColumn(name = "app_user_id", nullable = false)
+    @JoinColumn(name = "client_user_id", nullable = false)
     private User client;
 
     @OneToMany(mappedBy = "ordering")
@@ -58,7 +58,7 @@ public class Ordering {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.CREATED;
 
     @Embedded
     private Address deliveryAddress;
@@ -68,5 +68,21 @@ public class Ordering {
     private OffsetDateTime cancellationDate;
 
     private OffsetDateTime deliveryDate;
+
+    public void calculateTotalValue() {
+        this.subtotal = getItems().stream()
+                .map(item -> item.getTotalPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.totalValue = this.subtotal.add(this.shippingFee);
+    }
+
+    public void setShipping(){
+        setShippingFee(getRestaurant().getShippingFee());
+    }
+
+    public void assignOrderToItems() {
+        getItems().forEach(item -> item.setOrdering(this));
+    }
 
 }

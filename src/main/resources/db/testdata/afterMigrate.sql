@@ -13,6 +13,8 @@ delete from restaurant_form_payment;
 delete from app_user;
 delete from user_role;
 delete from restaurant_responsible_user;
+delete from ordering;
+delete from order_item;
 
 set foreign_key_checks = 1;
 
@@ -85,3 +87,25 @@ insert into app_user (id, name, email, password, registration_date) values
 insert into user_role (user_id, role_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (2,3), (3, 5);
+
+insert into ordering (id, restaurant_id, client_user_id, form_payment_id, address_city_id, address_zip,
+    address_street, address_number, address_complement, address_neighborhood,
+    status, registration_date, subtotal, shipping_fee, total_value)
+values (1, 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil',
+'CREATED', utc_timestamp, 298.90, 10, 308.90);
+
+insert into order_item (id, ordering_id, product_id, quantity, unit_price, total_price, observation)
+values (1, 1, 1, 1, 78.9, 78.9, null);
+
+insert into order_item (id, ordering_id, product_id, quantity, unit_price, total_price, observation)
+values (2, 1, 2, 2, 110, 220, 'Menos picante, por favor');
+
+
+insert into ordering (id, restaurant_id, client_user_id, form_payment_id, address_city_id, address_zip,
+        address_street, address_number, address_complement, address_neighborhood,
+        status, registration_date, subtotal, shipping_fee, total_value)
+values (2, 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
+'CREATED', utc_timestamp, 79, 0, 79);
+
+insert into order_item (id, ordering_id, product_id, quantity, unit_price, total_price, observation)
+values (3, 2, 6, 1, 79, 79, 'Ao ponto');
