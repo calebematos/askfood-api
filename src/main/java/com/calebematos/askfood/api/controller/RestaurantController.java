@@ -79,4 +79,15 @@ public class RestaurantController {
         }
     }
 
+    @PutMapping("/{restaurantId}/closure")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void close(@PathVariable Long restaurantId){
+        restaurantService.close(restaurantId);
+    }
+
+    @PutMapping("/{restaurantId}/opening")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void open(@PathVariable Long restaurantId){
+        restaurantService.open(restaurantId);
+    }
 }

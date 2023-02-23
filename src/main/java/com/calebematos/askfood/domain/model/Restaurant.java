@@ -29,58 +29,67 @@ import java.util.Set;
 @Entity
 public class Restaurant {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private Long id;
 
-	private String name;
+    private String name;
 
-	@Column(name = "shipping_fee")
-	private BigDecimal shippingFee;
+    @Column(name = "shipping_fee")
+    private BigDecimal shippingFee;
 
-	private Boolean active = Boolean.TRUE;
+    private Boolean active = Boolean.TRUE;
 
-	private Boolean open;
+    private Boolean open;
 
-	@Embedded
-	private Address address;
+    @Embedded
+    private Address address;
 
-	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
-	private OffsetDateTime registrationDate;
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private OffsetDateTime registrationDate;
 
-	@UpdateTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
-	private OffsetDateTime updateDate;
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private OffsetDateTime updateDate;
 
-	@ManyToOne
-	@JoinColumn(name = "cuisine_id", nullable = false)
-	private Cuisine cuisine;
+    @ManyToOne
+    @JoinColumn(name = "cuisine_id", nullable = false)
+    private Cuisine cuisine;
 
-	@ManyToMany
-	@JoinTable(name = "restaurant_form_payment",
-				joinColumns = @JoinColumn(name = "restaurant_id"),
-				inverseJoinColumns = @JoinColumn(name = "form_payment_id"))
-	private Set<FormPayment> formsPayment = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "restaurant_form_payment",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "form_payment_id"))
+    private Set<FormPayment> formsPayment = new HashSet<>();
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "restaurant")
-	private List<Product> products = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Product> products = new ArrayList<>();
 
-	public void activate(){
-		setActive(Boolean.TRUE);
-	}
-	public void inactivate(){
-		setActive(Boolean.FALSE);
-	}
+    public void activate() {
+        setActive(Boolean.TRUE);
+    }
 
-	public boolean removeFormPayment(FormPayment formPayment){
-		return getFormsPayment().remove(formPayment);
-	}
+    public void inactivate() {
+        setActive(Boolean.FALSE);
+    }
 
-	public boolean addFormPayment(FormPayment formPayment){
-		return getFormsPayment().add(formPayment);
-	}
+    public void open() {
+        setOpen(Boolean.TRUE);
+    }
+
+    public void close() {
+        setOpen(Boolean.FALSE);
+    }
+
+    public boolean removeFormPayment(FormPayment formPayment) {
+        return getFormsPayment().remove(formPayment);
+    }
+
+    public boolean addFormPayment(FormPayment formPayment) {
+        return getFormsPayment().add(formPayment);
+    }
 
 }
