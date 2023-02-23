@@ -6,11 +6,10 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Getter
 @Setter
-public class OrderingModel {
+public class OrderingResumedModel {
 
     private Long id;
 
@@ -19,15 +18,9 @@ public class OrderingModel {
     private BigDecimal totalValue;
 
     private OffsetDateTime registrationDate;
-    private OffsetDateTime confirmationDate;
-    private OffsetDateTime cancellationDate;
-    private OffsetDateTime deliveryDate;
 
     private RestaurantResumedModel restaurant;
-    private FormPaymentModel formPayment;
     private UserModel client;
     private OrderStatus status;
-    private AddressModel deliveryAddress;
-    private List<OrderItemModel> items;
 
 }

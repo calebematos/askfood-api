@@ -2,6 +2,7 @@ package com.calebematos.askfood.api.controller;
 
 import com.calebematos.askfood.api.mapper.OrderingMapper;
 import com.calebematos.askfood.api.model.OrderingModel;
+import com.calebematos.askfood.api.model.OrderingResumedModel;
 import com.calebematos.askfood.domain.model.Ordering;
 import com.calebematos.askfood.domain.repository.OrderingRepository;
 import com.calebematos.askfood.domain.service.OrderingService;
@@ -23,9 +24,9 @@ public class OrderingController {
     private final OrderingMapper mapper;
 
     @GetMapping
-    public List<OrderingModel> list() {
+    public List<OrderingResumedModel> list() {
         List<Ordering> orderings = orderingRepository.findAll();
-        return mapper.toCollectionModel(orderings);
+        return mapper.toCollectionResumedModel(orderings);
     }
 
     @GetMapping("/{orderingId}")
