@@ -3,6 +3,7 @@ package com.calebematos.askfood.domain.service;
 import com.calebematos.askfood.domain.exception.BusinessException;
 import com.calebematos.askfood.domain.exception.EntityInUseException;
 import com.calebematos.askfood.domain.exception.UserNotFoundException;
+import com.calebematos.askfood.domain.model.Role;
 import com.calebematos.askfood.domain.model.User;
 import com.calebematos.askfood.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class UserService {
 	public static final String MSG_ROLE_IN_USE = "User code %d cannot be removed because it is in use";
 
 	private final UserRepository userRepository;
+	private final RoleService roleService;
 
 	@Transactional
 	public User save(User user) {
@@ -65,5 +67,21 @@ public class UserService {
 
 		user.setPassword(newPassword);
 
+	}
+
+	@Transactional
+    public void disassociateRole(Long userId, Long roleId) {
+		User user = findById(userId);
+		Role role = roleService.findById(roleId);
+
+		user.removeRole(role);
+	}
+
+	@Transactional
+	public void associateRole(Long userId, Long roleId) {
+		User user = findById(userId);
+		Role role = roleService.findById(roleId);
+
+		user.addRole(role);
 	}
 }

@@ -33,13 +33,13 @@ public class RolePermissionController {
     @DeleteMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disassociate(@PathVariable Long roleId, @PathVariable Long permissionId) {
-        roleService.disassociate(roleId, permissionId);
+        roleService.disassociatePermission(roleId, permissionId);
     }
 
     @PutMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associate(@PathVariable Long roleId, @PathVariable Long permissionId) {
-        roleService.associate(roleId, permissionId);
+        roleService.associatePermission(roleId, permissionId);
     }
 
 }

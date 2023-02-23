@@ -6,6 +6,7 @@ import com.calebematos.askfood.domain.model.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.Collection;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -13,7 +14,7 @@ public abstract class RoleMapper {
 
     public abstract RoleModel toModel(Role role);
 
-    public abstract List<RoleModel> toCollectionModel(List<Role> roles);
+    public abstract List<RoleModel> toCollectionModel(Collection<Role> roles);
 
     public abstract Role toDomainObject(RoleInput roleInput);
 

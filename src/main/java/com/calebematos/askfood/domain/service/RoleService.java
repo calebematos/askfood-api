@@ -47,7 +47,7 @@ public class RoleService {
 	}
 
 	@Transactional
-    public void disassociate(Long roleId, Long permissionId) {
+    public void disassociatePermission(Long roleId, Long permissionId) {
 		Role role = findById(roleId);
 		Permission permission = permissionService.findById(permissionId);
 
@@ -55,7 +55,7 @@ public class RoleService {
 	}
 
 	@Transactional
-	public void associate(Long roleId, Long permissionId) {
+	public void associatePermission(Long roleId, Long permissionId) {
 		Role role = findById(roleId);
 		Permission permission = permissionService.findById(permissionId);
 

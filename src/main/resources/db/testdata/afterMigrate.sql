@@ -79,3 +79,5 @@ insert into app_user (id, name, email, password, registration_date) values
 (2, 'Maria Joaquina', 'maria.vnd@askfood.com', '123', utc_timestamp),
 (3, 'José Souza', 'jose.aux@askfood.com', '123', utc_timestamp),
 (4, 'Sebastião Martins', 'sebastiao.cad@askfood.com', '123', utc_timestamp);
+
+insert into user_role (user_id, role_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
