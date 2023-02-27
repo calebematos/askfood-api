@@ -27,6 +27,8 @@ alter table permission auto_increment = 1;
 alter table product auto_increment = 1;
 alter table restaurant auto_increment = 1;
 alter table app_user auto_increment = 1;
+alter table ordering auto_increment = 1;
+alter table order_item auto_increment = 1;
 
 insert into cuisine(id, name) values(1, 'Indian');
 insert into cuisine(id, name) values(2, 'Thai');

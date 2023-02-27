@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -54,7 +55,7 @@ public class Ordering {
     @JoinColumn(name = "client_user_id", nullable = false)
     private User client;
 
-    @OneToMany(mappedBy = "ordering")
+    @OneToMany(mappedBy = "ordering", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
 
     @Column(nullable = false)
@@ -71,6 +72,8 @@ public class Ordering {
     private OffsetDateTime deliveryDate;
 
     public void calculateTotalValue() {
+        getItems().forEach(OrderItem::calculateTotalPrice);
+
         this.subtotal = getItems().stream()
                 .map(item -> item.getTotalPrice())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

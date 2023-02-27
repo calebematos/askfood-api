@@ -1,6 +1,7 @@
 package com.calebematos.askfood.api.mapper;
 
 import com.calebematos.askfood.api.model.OrderItemModel;
+import com.calebematos.askfood.api.model.input.OrderItemInput;
 import com.calebematos.askfood.domain.model.OrderItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +13,6 @@ public abstract class OrderItemMapper {
     @Mapping(target = "productName", source = "orderItem.product.name")
     public abstract OrderItemModel toModel(OrderItem orderItem);
 
+    @Mapping(target = "product.id", source = "orderItem.productId")
+    public abstract OrderItem toDomainObject(OrderItemInput orderItem);
 }
