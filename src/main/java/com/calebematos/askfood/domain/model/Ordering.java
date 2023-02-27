@@ -1,5 +1,6 @@
 package com.calebematos.askfood.domain.model;
 
+import com.calebematos.askfood.domain.exception.BusinessException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,6 +22,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.String.format;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -81,7 +84,7 @@ public class Ordering {
         this.totalValue = this.subtotal.add(this.shippingFee);
     }
 
-    public void setShipping(){
+    public void setShipping() {
         setShippingFee(getRestaurant().getShippingFee());
     }
 
@@ -89,4 +92,26 @@ public class Ordering {
         getItems().forEach(item -> item.setOrdering(this));
     }
 
+    public void confirm() {
+        setStatus(OrderStatus.CONFIRMED);
+        setConfirmationDate(OffsetDateTime.now());
+    }
+
+    public void cancel() {
+        setStatus(OrderStatus.CANCELED);
+        setCancellationDate(OffsetDateTime.now());
+    }
+
+    public void deliver() {
+        setStatus(OrderStatus.DELIVERED);
+        setDeliveryDate(OffsetDateTime.now());
+    }
+
+    private void setStatus(OrderStatus newStatus) {
+        if (getStatus().cannotChangeTo(newStatus)) {
+            throw BusinessException.of(format("Order status %s can not be changed from %s to %s",
+                    getId(), getStatus().getDescription(), newStatus.getDescription()));
+        }
+        this.status = newStatus;
+    }
 }
