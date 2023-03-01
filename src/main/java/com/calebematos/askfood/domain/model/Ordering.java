@@ -18,10 +18,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.lang.String.format;
 
@@ -34,6 +36,8 @@ public class Ordering {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+
+    private String code;
 
     private BigDecimal subtotal;
 
@@ -110,8 +114,14 @@ public class Ordering {
     private void setStatus(OrderStatus newStatus) {
         if (getStatus().cannotChangeTo(newStatus)) {
             throw BusinessException.of(format("Order status %s can not be changed from %s to %s",
-                    getId(), getStatus().getDescription(), newStatus.getDescription()));
+                    getCode(), getStatus().getDescription(), newStatus.getDescription()));
         }
         this.status = newStatus;
     }
+
+    @PrePersist
+    private void generateCode(){
+        setCode(UUID.randomUUID().toString());
+    }
+
 }

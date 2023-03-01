@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 @Setter
 public class OrderingResumedModel {
 
-    private Long id;
+    private String code;
 
     private BigDecimal subtotal;
     private BigDecimal shippingFee;

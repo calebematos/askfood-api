@@ -12,20 +12,20 @@ public class OrderingFlowService {
     private final OrderingService orderingService;
 
     @Transactional
-    public void confirm(Long orderingId) {
-        Ordering ordering = orderingService.findById(orderingId);
+    public void confirm(String orderingCode) {
+        Ordering ordering = orderingService.findById(orderingCode);
         ordering.confirm();
     }
 
     @Transactional
-    public void cancel(Long orderingId) {
-        Ordering ordering = orderingService.findById(orderingId);
+    public void cancel(String orderingCode) {
+        Ordering ordering = orderingService.findById(orderingCode);
         ordering.cancel();
     }
 
     @Transactional
-    public void deliver(Long orderingId) {
-        Ordering ordering = orderingService.findById(orderingId);
+    public void deliver(String orderingCode) {
+        Ordering ordering = orderingService.findById(orderingCode);
         ordering.deliver();
     }
 }

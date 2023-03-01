@@ -25,9 +25,9 @@ public class OrderingService {
     private final ProductService productService;
 
 
-    public Ordering findById(Long orderingId) {
-        return orderingRepository.findById(orderingId).orElseThrow(() ->
-                OrderingNotFoundException.of(orderingId));
+    public Ordering findById(String orderingCode) {
+        return orderingRepository.findByCode(orderingCode).orElseThrow(() ->
+                OrderingNotFoundException.of(orderingCode));
     }
 
     @Transactional

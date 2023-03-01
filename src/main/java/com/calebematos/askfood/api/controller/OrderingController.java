@@ -35,9 +35,9 @@ public class OrderingController {
         return mapper.toCollectionResumedModel(orderings);
     }
 
-    @GetMapping("/{orderingId}")
-    public OrderingModel find(@PathVariable Long orderingId) {
-        Ordering ordering = orderingService.findById(orderingId);
+    @GetMapping("/{orderingCode}")
+    public OrderingModel find(@PathVariable String orderingCode) {
+        Ordering ordering = orderingService.findById(orderingCode);
         return mapper.toModel(ordering);
     }
 
