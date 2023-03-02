@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +29,9 @@ public class RestaurantProductController {
     private final ProductMapper mapper;
 
     @GetMapping
-    public List<ProductModel> list(@PathVariable Long restaurantId) {
-        List<Product> allProducts = productService.findAllProductsByRestaurant(restaurantId);
+    public List<ProductModel> list(@PathVariable Long restaurantId,
+                                   @RequestParam(required = false) boolean addInactive) {
+        List<Product> allProducts = productService.findAllProductsByRestaurant(restaurantId, addInactive);
         return mapper.toCollectionModel(allProducts);
     }
 

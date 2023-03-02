@@ -18,10 +18,17 @@ public class ProductService {
     private final RestaurantService restaurantService;
 
 
-    public List<Product> findAllProductsByRestaurant(Long restaurantId) {
+    public List<Product> findAllProductsByRestaurant(Long restaurantId, Boolean addInactive) {
 
         Restaurant restaurant = restaurantService.findById(restaurantId);
-        return productRepository.findByRestaurant(restaurant);
+
+        List<Product> productList = null;
+        if (addInactive) {
+            productList = productRepository.findByRestaurant(restaurant);
+        } else {
+            productList = productRepository.findActiveByRestaurant(restaurant);
+        }
+        return productList;
     }
 
     public Product findById(Long restaurantId, Long productId) {
