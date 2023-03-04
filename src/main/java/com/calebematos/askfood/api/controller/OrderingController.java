@@ -6,7 +6,9 @@ import com.calebematos.askfood.api.model.OrderingResumedModel;
 import com.calebematos.askfood.api.model.input.OrderingInput;
 import com.calebematos.askfood.domain.model.Ordering;
 import com.calebematos.askfood.domain.repository.OrderingRepository;
+import com.calebematos.askfood.domain.repository.filter.OrderingFilter;
 import com.calebematos.askfood.domain.service.OrderingService;
+import com.calebematos.askfood.infrastructure.repository.specification.OrderingSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +32,8 @@ public class OrderingController {
     private final OrderingMapper mapper;
 
     @GetMapping
-    public List<OrderingResumedModel> list() {
-        List<Ordering> orderings = orderingRepository.findAll();
+    public List<OrderingResumedModel> search(OrderingFilter filter) {
+        List<Ordering> orderings = orderingRepository.findAll(OrderingSpecifications.usingFilter(filter));
         return mapper.toCollectionResumedModel(orderings);
     }
 
