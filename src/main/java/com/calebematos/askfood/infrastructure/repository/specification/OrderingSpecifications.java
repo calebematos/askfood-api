@@ -13,8 +13,10 @@ public class OrderingSpecifications {
 		return (root, query, builder) -> {
 			var predicates = new ArrayList<Predicate>();
 
-			root.fetch("restaurant").fetch("cuisine");
-			root.fetch("client");
+			if(Ordering.class.equals(query.getResultType())) {
+				root.fetch("restaurant").fetch("cuisine");
+				root.fetch("client");
+			}
 
 			if(filter.getClientId() != null){
 				predicates.add(builder.equal(root.get("client"),filter.getClientId()));

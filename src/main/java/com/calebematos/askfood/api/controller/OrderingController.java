@@ -8,8 +8,10 @@ import com.calebematos.askfood.domain.model.Ordering;
 import com.calebematos.askfood.domain.repository.OrderingRepository;
 import com.calebematos.askfood.domain.repository.filter.OrderingFilter;
 import com.calebematos.askfood.domain.service.OrderingService;
-import com.calebematos.askfood.infrastructure.repository.specification.OrderingSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.calebematos.askfood.infrastructure.repository.specification.OrderingSpecifications.usingFilter;
+
 @RestController
 @RequestMapping("/orderings")
 @RequiredArgsConstructor
@@ -32,9 +36,11 @@ public class OrderingController {
     private final OrderingMapper mapper;
 
     @GetMapping
-    public List<OrderingResumedModel> search(OrderingFilter filter) {
-        List<Ordering> orderings = orderingRepository.findAll(OrderingSpecifications.usingFilter(filter));
-        return mapper.toCollectionResumedModel(orderings);
+    public Page<OrderingResumedModel> search(OrderingFilter filter, Pageable pageable) {
+        Page<Ordering> orderingPage = orderingRepository.findAll(usingFilter(filter), pageable);
+
+        List<OrderingResumedModel> orderingResumedModels = mapper.toCollectionResumedModel(orderingPage.getContent());
+        return new PageImpl<>(orderingResumedModels, pageable, orderingPage.getTotalElements());
     }
 
     @GetMapping("/{orderingCode}")
