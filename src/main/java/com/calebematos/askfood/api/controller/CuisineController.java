@@ -10,6 +10,10 @@ import com.calebematos.askfood.domain.model.Cuisine;
 import com.calebematos.askfood.domain.repository.CuisineRepository;
 import com.calebematos.askfood.domain.service.CuisineService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +38,10 @@ public class CuisineController {
     private final CuisineMapper cuisineMapper;
 
     @GetMapping
-    public List<CuisineModel> list() {
-        List<Cuisine> cuisines = cuisineRepository.findAll();
-        return cuisineMapper.toCollectionModel(cuisines);
+    public Page<CuisineModel> list(@PageableDefault(size = 10) Pageable pageable) {
+        Page<Cuisine> cuisines = cuisineRepository.findAll(pageable);
+        List<CuisineModel> cuisineModels = cuisineMapper.toCollectionModel(cuisines.getContent());
+        return new PageImpl<>(cuisineModels, pageable, cuisines.getTotalElements());
     }
 
     @GetMapping("/{cuisineId}")
