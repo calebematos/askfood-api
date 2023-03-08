@@ -1,7 +1,7 @@
 package com.calebematos.askfood.infrastructure.repository.specification;
 
 import com.calebematos.askfood.domain.model.Ordering;
-import com.calebematos.askfood.domain.repository.filter.OrderingFilter;
+import com.calebematos.askfood.domain.filter.OrderingFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;

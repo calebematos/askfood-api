@@ -1,4 +1,4 @@
-package com.calebematos.askfood.domain.repository.filter;
+package com.calebematos.askfood.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,11 +6,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.OffsetDateTime;
 
-@Setter
 @Getter
-public class OrderingFilter {
+@Setter
+public class DailySaleFilter {
 
-    private Long clientId;
     private Long restaurantId;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

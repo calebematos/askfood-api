@@ -7,7 +7,7 @@ import com.calebematos.askfood.api.model.input.OrderingInput;
 import com.calebematos.askfood.core.data.PageableTranslator;
 import com.calebematos.askfood.domain.model.Ordering;
 import com.calebematos.askfood.domain.repository.OrderingRepository;
-import com.calebematos.askfood.domain.repository.filter.OrderingFilter;
+import com.calebematos.askfood.domain.filter.OrderingFilter;
 import com.calebematos.askfood.domain.service.OrderingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
