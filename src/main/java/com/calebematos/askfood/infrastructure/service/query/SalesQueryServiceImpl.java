@@ -1,4 +1,4 @@
-package com.calebematos.askfood.infrastructure.service;
+package com.calebematos.askfood.infrastructure.service.query;
 
 import com.calebematos.askfood.domain.filter.DailySaleFilter;
 import com.calebematos.askfood.domain.model.OrderStatus;
