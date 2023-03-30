@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -101,7 +102,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
                                                                    HttpStatus status, WebRequest request) {
 
-
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = format("The resource '%s', which you tried to access, is non-existent", ex.getRequestURL());
 
@@ -129,49 +129,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleTypeMismatch(ex, headers, status, request);
     }
 
-    private ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
-                                                                    HttpHeaders headers, HttpStatus status,
-                                                                    WebRequest request) {
-
-        ProblemType problemType = ProblemType.BUSINESS_ERROR;
-        String detail = format("The URL parameter '%s' received the value '%s', which is an invalid type. " +
-                        "Fix it and enter a value compatible with type %s", ex.getName(), ex.getValue(),
-                ex.getRequiredType().getSimpleName());
-
-        Problem problem = createProblemBuilder(status, problemType, detail)
-                .userMessage(MSG_GENERIC_ERROR_FOR_FINAL_USER)
-                .build();
-
-        return handleExceptionInternal(ex, problem, headers, status, request);
-    }
-
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
         BindingResult bindingResult = ex.getBindingResult();
         return handleValidationInternal(ex, headers, status, request, bindingResult);
-    }
-
-    private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request, BindingResult bindingResult ) {
-
-        List<Problem.Field> fields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> {
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                    return  Problem.Field.builder()
-                            .name(fieldError.getField())
-                            .userMessage(message)
-                            .build();
-                })
-                .collect(Collectors.toList());
-
-        ProblemType problemType = ProblemType.INVALID_DATA;
-        String detail = format("One or more fields are invalid. Fill in correctly and try again.");
-
-        Problem problem = createProblemBuilder(status, problemType, detail)
-                .userMessage(detail)
-                .fields(fields)
-                .build();
-
-        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     @Override
@@ -195,6 +157,72 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+                                                                      HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return ResponseEntity.status(status).headers(headers).build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+                                                             HttpStatus status, WebRequest request) {
+
+        if (body == null) {
+            body = Problem.builder()
+                    .timestamp(OffsetDateTime.now())
+                    .status(status.value())
+                    .title(status.getReasonPhrase())
+                    .build();
+        } else if (body instanceof String) {
+            body = Problem.builder()
+                    .timestamp(OffsetDateTime.now())
+                    .status(status.value())
+                    .title((String) body)
+                    .build();
+        }
+        return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    private ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
+                                                                    HttpHeaders headers, HttpStatus status,
+                                                                    WebRequest request) {
+
+        ProblemType problemType = ProblemType.BUSINESS_ERROR;
+        String detail = format("The URL parameter '%s' received the value '%s', which is an invalid type. " +
+                        "Fix it and enter a value compatible with type %s", ex.getName(), ex.getValue(),
+                ex.getRequiredType().getSimpleName());
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_GENERIC_ERROR_FOR_FINAL_USER)
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
+                                                            HttpStatus status, WebRequest request, BindingResult bindingResult) {
+
+        List<Problem.Field> fields = bindingResult.getFieldErrors().stream()
+                .map(fieldError -> {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    return Problem.Field.builder()
+                            .name(fieldError.getField())
+                            .userMessage(message)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        ProblemType problemType = ProblemType.INVALID_DATA;
+        String detail = format("One or more fields are invalid. Fill in correctly and try again.");
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .fields(fields)
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     private ResponseEntity<Object> handlePropertyBinding(PropertyBindingException ex, HttpHeaders headers,
@@ -227,28 +255,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
-
-
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-                                                             HttpStatus status, WebRequest request) {
-
-        if (body == null) {
-            body = Problem.builder()
-                    .timestamp(OffsetDateTime.now())
-                    .status(status.value())
-                    .title(status.getReasonPhrase())
-                    .build();
-        } else if (body instanceof String) {
-            body = Problem.builder()
-                    .timestamp(OffsetDateTime.now())
-                    .status(status.value())
-                    .title((String) body)
-                    .build();
-        }
-        return super.handleExceptionInternal(ex, body, headers, status, request);
-    }
-
 
     private static String joinPath(List<JsonMappingException.Reference> reference) {
         return reference.stream()

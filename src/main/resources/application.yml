@@ -34,3 +34,8 @@ spring:
   web:
     resources:
       add-mappings: false
+
+askfood:
+  storage:
+    local:
+      photo-directory: /home/calebe/Imagens/catalog
