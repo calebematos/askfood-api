@@ -37,5 +37,12 @@ spring:
 
 askfood:
   storage:
+    type: s3
     local:
       photo-directory: /home/calebe/Imagens/catalog
+    s3:
+      id-access-key: ${S3_ID_ACCESS_KEY}
+      secret-access-key: ${S3_SECRET_ACCESS_KEY}
+      bucket: askfood-test
+      region: us-east-1
+      photo-directory: catalog

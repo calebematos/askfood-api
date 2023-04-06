@@ -37,6 +37,7 @@ public class CatalogProductPhotoService {
         PhotoStorageService.NewPhoto newPhoto = PhotoStorageService.NewPhoto
                 .builder()
                 .fileName(fileName)
+                .contentType(photo.getContentType())
                 .inputStream(inputStream)
                 .build();
 
@@ -51,7 +52,7 @@ public class CatalogProductPhotoService {
 
     }
 
-    public InputStream getPhoto(ProductPhoto productPhoto) {
+    public PhotoStorageService.RecoveredPhoto getPhoto(ProductPhoto productPhoto) {
         return photoStorageService.retrieve(productPhoto.getFileName());
     }
 

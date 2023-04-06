@@ -1,19 +1,18 @@
 package com.calebematos.askfood.infrastructure.service.storage;
 
+import com.calebematos.askfood.core.storage.StorageProperties;
 import com.calebematos.askfood.domain.service.PhotoStorageService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
+@RequiredArgsConstructor
 public class LocalPhotoStorageService implements PhotoStorageService {
 
-    @Value("${askfood.storage.local.photo-directory}")
-    private Path photoDirectory;
+    private final StorageProperties storageProperties;
 
     @Override
     public void store(NewPhoto newPhoto) {
@@ -35,20 +34,24 @@ public class LocalPhotoStorageService implements PhotoStorageService {
         } catch (Exception e) {
             throw StorageException.of("Could not remove the file", e);
         }
-
     }
 
     @Override
-    public InputStream retrieve(String fileName) {
+    public RecoveredPhoto retrieve(String fileName) {
         try {
             Path path = getFilePath(fileName);
-            return Files.newInputStream(path);
+            InputStream inputStream = Files.newInputStream(path);
+
+            return RecoveredPhoto.builder()
+                    .inputStream(inputStream)
+                    .build();
         } catch (Exception e) {
             throw StorageException.of("Could not retrieve the file", e);
         }
     }
 
     private Path getFilePath(String fileName) {
-        return photoDirectory.resolve(Path.of(fileName));
+        return storageProperties.getLocal().getPhotoDirectory()
+                .resolve(Path.of(fileName));
     }
 }

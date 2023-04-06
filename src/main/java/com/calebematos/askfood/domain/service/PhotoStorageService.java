@@ -12,7 +12,7 @@ public interface PhotoStorageService {
 
     void remove(String fileName);
 
-    InputStream retrieve(String fileName);
+    RecoveredPhoto retrieve(String fileName);
 
     default void replace(String existingFileName, NewPhoto newPhoto) {
         store(newPhoto);
@@ -29,6 +29,18 @@ public interface PhotoStorageService {
     @Builder
     class NewPhoto {
         private String fileName;
+        private String contentType;
         private InputStream inputStream;
+    }
+
+    @Getter
+    @Builder
+    class RecoveredPhoto {
+        private InputStream inputStream;
+        private String url;
+
+        public boolean hasUrl(){
+            return this.url != null;
+        }
     }
 }
