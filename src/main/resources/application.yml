@@ -35,9 +35,15 @@ spring:
     resources:
       add-mappings: false
 
+  mail:
+    host: smtp.sendgrid.net
+    port: 587
+    username: apikey
+    password: ${SENDGRID_APIKEY}
+
 askfood:
   storage:
-    type: s3
+    type: local
     local:
       photo-directory: /home/calebe/Imagens/catalog
     s3:
@@ -46,3 +52,7 @@ askfood:
       bucket: askfood-test
       region: us-east-1
       photo-directory: catalog
+
+  email:
+    sender: do-not-reply@askfood.com
+    impl: fake

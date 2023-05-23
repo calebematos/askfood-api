@@ -1,9 +1,12 @@
 package com.calebematos.askfood.domain.model;
 
+import com.calebematos.askfood.domain.event.CanceledOrderEvent;
+import com.calebematos.askfood.domain.event.ConfirmedOrderEvent;
 import com.calebematos.askfood.domain.exception.BusinessException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,9 +31,9 @@ import java.util.UUID;
 import static java.lang.String.format;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-public class Ordering {
+public class Ordering extends AbstractAggregateRoot<Ordering> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,11 +102,15 @@ public class Ordering {
     public void confirm() {
         setStatus(OrderStatus.CONFIRMED);
         setConfirmationDate(OffsetDateTime.now());
+
+        registerEvent(new ConfirmedOrderEvent(this));
     }
 
     public void cancel() {
         setStatus(OrderStatus.CANCELED);
         setCancellationDate(OffsetDateTime.now());
+
+        registerEvent(new CanceledOrderEvent(this));
     }
 
     public void deliver() {

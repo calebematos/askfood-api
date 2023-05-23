@@ -8,7 +8,7 @@ public class ReportException extends RuntimeException {
         super(message, cause);
     }
 
-    public static RuntimeException of(String message, Throwable cause) {
+    public static ReportException of(String message, Throwable cause) {
          return new ReportException(message, cause);
     }
 }
