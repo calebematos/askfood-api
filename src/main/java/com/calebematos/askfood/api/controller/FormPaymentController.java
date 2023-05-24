@@ -7,7 +7,9 @@ import com.calebematos.askfood.domain.model.FormPayment;
 import com.calebematos.askfood.domain.repository.FormPaymentRepository;
 import com.calebematos.askfood.domain.service.FormPaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/formPayments")
@@ -31,15 +34,21 @@ public class FormPaymentController {
     private final FormPaymentMapper mapper;
 
     @GetMapping
-    public List<FormPaymentModel> list() {
+    public ResponseEntity<List<FormPaymentModel>> list() {
         List<FormPayment> formPayments = formPaymentRepository.findAll();
-        return mapper.toCollectionModel(formPayments);
+        List<FormPaymentModel> formPaymentList = mapper.toCollectionModel(formPayments);
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
+                .body(formPaymentList);
     }
 
     @GetMapping("/{formPaymentId}")
-    public FormPaymentModel find(@PathVariable Long formPaymentId) {
+    public ResponseEntity<FormPaymentModel> find(@PathVariable Long formPaymentId) {
         FormPayment formPayment = formPaymentService.findById(formPaymentId);
-        return mapper.toModel(formPayment);
+        FormPaymentModel formPaymentModel = mapper.toModel(formPayment);
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
+                .body(formPaymentModel);
     }
 
     @PostMapping
