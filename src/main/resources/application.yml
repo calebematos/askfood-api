@@ -56,3 +56,6 @@ askfood:
   email:
     sender: do-not-reply@askfood.com
     impl: fake
+
+springdoc:
+  packages-to-scan: com.calebematos.askfood.api

@@ -19,6 +19,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jasperreports.version>6.20.0</jasperreports.version>
         <aws-java-sdk-s3.version>1.12.336</aws-java-sdk-s3.version>
+        <springdoc.version>1.6.9</springdoc.version>
     </properties>
 
     <dependencies>
@@ -113,6 +114,13 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>${aws-java-sdk-s3.version}</version>
+        </dependency>
+
+        <!-- Spring DOC -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
         </dependency>
     </dependencies>
 
