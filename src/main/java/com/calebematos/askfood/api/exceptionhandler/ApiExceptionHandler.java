@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.MessageSource;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
+@Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -48,7 +50,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.SYSTEM_ERROR;
         String detail = MSG_GENERIC_ERROR_FOR_FINAL_USER;
 
-
+        log.error(ex.getMessage(), ex);
+        
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
                 .build();
